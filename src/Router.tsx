@@ -1,25 +1,18 @@
-import { useState, useEffect, Children } from 'react';
+import { useState, useEffect, Children, PropsWithChildren } from 'react';
 import { EVENTS } from './constants';
 import { match } from 'path-to-regexp';
-
-type RouteParams = { query: string };
+import { ComponentDefaultProps, RouteParams, RouteProps } from './types';
 
 interface Props {
-  routes: Array<{
-    path: string;
-    Component: ({ routeParams }: { routeParams: RouteParams }) => JSX.Element;
-  }>;
-  defaultComponent: ({
-    routeParams,
-  }: {
-    routeParams: RouteParams;
-  }) => JSX.Element;
+  routes: Array<RouteProps>;
+  defaultComponent: (props: ComponentDefaultProps) => JSX.Element;
 }
 
 function Router({
+  children,
   routes = [],
   defaultComponent: DefaultComponent = () => <h1>404</h1>,
-}: Props) {
+}: PropsWithChildren<Props>) {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
   useEffect(() => {
@@ -33,25 +26,28 @@ function Router({
     };
   }, []);
 
-  let routeParams: RouteParams;
+  let routeParams: RouteParams = { query: '' };
 
   // Routes from children <Route /> components
-  /*  const routesFromChildren = Children.map((children) => {
-    const { type, props } = children;
-    const { name } = type;
-    const isRoute = name === 'Route';
+  const routesFromChildren =
+    Children.map(children, (child) => {
+      const { props, type } = child as JSX.Element;
+      const { name } = type;
+      const isRoute = name === 'Route';
 
-    return isRoute ? props : null;
-  }).filter; */
+      return isRoute ? (props as RouteProps) : null;
+    })?.filter((route) => Boolean(route)) || [];
 
-  const Page = routes.find(({ path }) => {
+  const routesToUse = [...routes, ...routesFromChildren];
+
+  const Page = routesToUse.find(({ path }) => {
     if (path === currentPath) return true;
 
     const matcherUrl = match(path, { decode: decodeURIComponent });
     const matched = matcherUrl(currentPath);
     if (!matched) return false;
 
-    routeParams = matched.params;
+    routeParams = matched.params as { query: string };
     return true;
   })?.Component;
 
