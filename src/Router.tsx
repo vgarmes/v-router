@@ -2,10 +2,24 @@ import { useState, useEffect, Children } from 'react';
 import { EVENTS } from './constants';
 import { match } from 'path-to-regexp';
 
+type RouteParams = { query: string };
+
+interface Props {
+  routes: Array<{
+    path: string;
+    Component: ({ routeParams }: { routeParams: RouteParams }) => JSX.Element;
+  }>;
+  defaultComponent: ({
+    routeParams,
+  }: {
+    routeParams: RouteParams;
+  }) => JSX.Element;
+}
+
 function Router({
   routes = [],
   defaultComponent: DefaultComponent = () => <h1>404</h1>,
-}) {
+}: Props) {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
   useEffect(() => {
@@ -19,16 +33,16 @@ function Router({
     };
   }, []);
 
-  let routeParams = {};
+  let routeParams: RouteParams;
 
   // Routes from children <Route /> components
-  const routesFromChildren = Children.map((children) => {
+  /*  const routesFromChildren = Children.map((children) => {
     const { type, props } = children;
     const { name } = type;
     const isRoute = name === 'Route';
 
     return isRoute ? props : null;
-  }).filter;
+  }).filter; */
 
   const Page = routes.find(({ path }) => {
     if (path === currentPath) return true;
