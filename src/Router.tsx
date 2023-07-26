@@ -2,10 +2,11 @@ import { useState, useEffect, Children, PropsWithChildren } from 'react';
 import { EVENTS } from './constants';
 import { match } from 'path-to-regexp';
 import { ComponentDefaultProps, RouteParams, RouteProps } from './types';
+import { getCurrentPath } from './utils';
 
 interface Props {
-  routes: Array<RouteProps>;
-  defaultComponent: (props: ComponentDefaultProps) => JSX.Element;
+  routes?: Array<RouteProps>;
+  defaultComponent?: (props: ComponentDefaultProps) => JSX.Element;
 }
 
 function Router({
@@ -13,10 +14,10 @@ function Router({
   routes = [],
   defaultComponent: DefaultComponent = () => <h1>404</h1>,
 }: PropsWithChildren<Props>) {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [currentPath, setCurrentPath] = useState(getCurrentPath());
 
   useEffect(() => {
-    const onLocationChange = () => setCurrentPath(window.location.pathname);
+    const onLocationChange = () => setCurrentPath(getCurrentPath());
 
     window.addEventListener(EVENTS.PUSHSTATE, onLocationChange);
     window.addEventListener(EVENTS.POPSTATE, onLocationChange);
@@ -36,7 +37,7 @@ function Router({
       const isRoute = name === 'Route';
 
       return isRoute ? (props as RouteProps) : null;
-    })?.filter((route) => Boolean(route)) || [];
+    })?.filter(Boolean) || [];
 
   const routesToUse = [...routes, ...routesFromChildren];
 
