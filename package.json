@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "build": "tsup src/index.ts --format cjs,esm --dts"
+    "build": "tsc && tsup src/index.ts --format cjs,esm --dts"
   },
   "dependencies": {
     "path-to-regexp": "^6.2.1"
