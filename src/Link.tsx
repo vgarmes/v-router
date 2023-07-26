@@ -1,5 +1,5 @@
 import { AnchorHTMLAttributes, MouseEvent } from 'react';
-import { EVENTS } from '../constants';
+import { EVENTS } from './constants';
 
 function navigate(href: string) {
   window.history.pushState({}, '', href);

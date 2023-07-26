@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
 import './App.css';
-import { Router, Route } from './router';
+import { Router, Route } from './';
 import HomePage from './pages/Home';
 import SearchPage from './pages/Search';
 import Page404 from './pages/404';

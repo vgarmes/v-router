@@ -1,4 +1,4 @@
-import { Link } from '../router';
+import { Link } from '../';
 
 function HomePage() {
   return (

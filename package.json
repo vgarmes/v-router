@@ -1,18 +1,21 @@
 {
   "name": "vite-router",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
+  "main": "lib/index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "prepare": "swc ./src -d lib --only ./src/**/*.ts"
   },
   "dependencies": {
-    "path-to-regexp": "^6.2.1",
+    "path-to-regexp": "^6.2.1"
+  },
+  "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

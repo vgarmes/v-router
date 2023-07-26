@@ -1,7 +1,7 @@
 import { useState, useEffect, Children, PropsWithChildren } from 'react';
-import { EVENTS } from '../constants';
+import { EVENTS } from './constants';
 import { match } from 'path-to-regexp';
-import { ComponentDefaultProps, RouteParams, RouteProps } from '../router';
+import { ComponentDefaultProps, RouteParams, RouteProps } from './';
 import { getCurrentPath } from './utils';
 
 interface Props {
