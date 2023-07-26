@@ -12,3 +12,9 @@ export interface RouteProps {
   path: string;
   Component: RouteComponent | LazyExoticComponent<RouteComponent>;
 }
+
+export function Route(_props: RouteProps) {
+  return null;
+}
+
+Route.displayName = 'Route';

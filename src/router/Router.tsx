@@ -1,7 +1,7 @@
 import { useState, useEffect, Children, PropsWithChildren } from 'react';
-import { EVENTS } from './constants';
+import { EVENTS } from '../constants';
 import { match } from 'path-to-regexp';
-import { ComponentDefaultProps, RouteParams, RouteProps } from './types';
+import { ComponentDefaultProps, RouteParams, RouteProps } from '../router';
 import { getCurrentPath } from './utils';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   defaultComponent?: (props: ComponentDefaultProps) => JSX.Element;
 }
 
-function Router({
+export function Router({
   children,
   routes = [],
   defaultComponent: DefaultComponent = () => <h1>404</h1>,
@@ -59,4 +59,4 @@ function Router({
   );
 }
 
-export default Router;
+Router.displayName = 'Router';

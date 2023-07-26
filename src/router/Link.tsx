@@ -1,5 +1,5 @@
 import { AnchorHTMLAttributes, MouseEvent } from 'react';
-import { EVENTS } from './constants';
+import { EVENTS } from '../constants';
 
 function navigate(href: string) {
   window.history.pushState({}, '', href);
@@ -10,7 +10,7 @@ function navigate(href: string) {
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   to: string;
 }
-function Link({ target, to, ...props }: LinkProps) {
+export function Link({ target, to, ...props }: LinkProps) {
   const handleClick = (event: MouseEvent) => {
     const isMainEvent = event.button === 0; // left click
     const isModifiedEvent =
@@ -26,4 +26,4 @@ function Link({ target, to, ...props }: LinkProps) {
   return <a onClick={handleClick} href={to} target={target} {...props} />;
 }
 
-export default Link;
+Link.displayName = 'Link';
