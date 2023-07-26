@@ -13,6 +13,7 @@ export interface RouteProps {
   Component: RouteComponent | LazyExoticComponent<RouteComponent>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function Route(_props: RouteProps) {
   return null;
 }
