@@ -20,7 +20,7 @@ pnpm install
 pnpm run dev
 ```
 
-### Runnint tests
+### Running tests
 ```js
 pnpm run test
 ```
