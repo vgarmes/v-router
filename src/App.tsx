@@ -2,15 +2,15 @@ import { Suspense, lazy } from 'react';
 import './App.css';
 import { Router, Route } from './';
 import HomePage from './pages/Home';
-import SearchPage from './pages/Search';
+import UserPage from './pages/User.tsx';
 import Page404 from './pages/404';
 
 const AboutPage = lazy(() => import('./pages/About.tsx'));
 
 const routes = [
   {
-    path: '/search/:query',
-    Component: SearchPage,
+    path: '/user/:id',
+    Component: UserPage,
   },
 ];
 
