@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 interface RouterContext {
-  path: string;
+  pathname: string;
   asPath: string;
   params: Record<string, string>;
   query: Record<string, string | string[]>;

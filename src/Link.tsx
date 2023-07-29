@@ -1,12 +1,12 @@
 import { AnchorHTMLAttributes, MouseEvent } from 'react';
-import { useRouter } from '.';
+import { PathObject, dispatchPushStateEvent, getRelativeHref } from './utils';
 
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-  to: string;
+  to: string | PathObject;
 }
 
 export function Link({ target, to, ...props }: LinkProps) {
-  const { navigate } = useRouter();
+  const href = getRelativeHref(to);
   const handleClick = (event: MouseEvent) => {
     const isMainEvent = event.button === 0; // left click
     const isModifiedEvent =
@@ -15,11 +15,11 @@ export function Link({ target, to, ...props }: LinkProps) {
 
     if (isMainEvent && isManageableEvent && !isModifiedEvent) {
       event.preventDefault();
-      navigate(to);
+      dispatchPushStateEvent(href);
     }
   };
 
-  return <a onClick={handleClick} href={to} target={target} {...props} />;
+  return <a onClick={handleClick} href={href} target={target} {...props} />;
 }
 
 Link.displayName = 'Link';

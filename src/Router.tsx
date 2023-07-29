@@ -2,7 +2,13 @@ import { useState, useEffect, Children, PropsWithChildren } from 'react';
 import { EVENTS } from './constants';
 import { match } from 'path-to-regexp';
 import { RouteProps } from './';
-import { getCurrentPath, getQueryParams } from './utils';
+import {
+  PathObject,
+  dispatchPushStateEvent,
+  getCurrentPath,
+  getRelativeHref,
+  getQueryParams,
+} from './utils';
 import { RouterContext } from './context';
 
 interface Props {
@@ -10,10 +16,9 @@ interface Props {
   defaultComponent?: () => JSX.Element;
 }
 
-function navigate(href: string) {
-  window.history.pushState({}, '', href);
-  const navigationEvent = new Event(EVENTS.PUSHSTATE);
-  window.dispatchEvent(navigationEvent);
+function navigate(to: string | PathObject) {
+  const href = getRelativeHref(to);
+  dispatchPushStateEvent(href);
 }
 
 export function Router({
@@ -21,14 +26,17 @@ export function Router({
   routes = [],
   defaultComponent: DefaultComponent = () => <h1>404</h1>,
 }: PropsWithChildren<Props>) {
-  const [currentPath, setCurrentPath] = useState(getCurrentPath());
-  const [currentQuery, setCurrentQuery] = useState(getQueryParams());
+  const [currentLocation, setCurrentLocation] = useState({
+    path: getCurrentPath(),
+    query: getQueryParams(),
+  });
 
   useEffect(() => {
-    const onLocationChange = () => {
-      setCurrentPath(getCurrentPath());
-      setCurrentQuery(getQueryParams());
-    };
+    const onLocationChange = () =>
+      setCurrentLocation({
+        path: getCurrentPath(),
+        query: getQueryParams(),
+      });
     window.addEventListener(EVENTS.PUSHSTATE, onLocationChange);
     window.addEventListener(EVENTS.POPSTATE, onLocationChange);
     return () => {
@@ -38,7 +46,7 @@ export function Router({
   }, []);
 
   let params: Record<string, string> = {};
-  let routePath: string = '';
+  let pathname: string = '';
   // Routes from children <Route /> components
   const routesFromChildren =
     Children.map(children, (child) => {
@@ -52,28 +60,28 @@ export function Router({
   const routesToUse = [...routes, ...routesFromChildren];
 
   const Page = routesToUse.find(({ path }) => {
-    if (path === currentPath) {
-      routePath = path;
+    if (path === currentLocation.path) {
+      pathname = path;
       return true;
     }
 
     const matcherUrl = match(path, { decode: decodeURIComponent });
 
-    const matched = matcherUrl(currentPath);
+    const matched = matcherUrl(currentLocation.path);
     if (!matched) return false;
 
     params = matched.params as Record<string, string>;
-    routePath = path;
+    pathname = path;
     return true;
   })?.Component;
 
   return (
     <RouterContext.Provider
       value={{
-        path: routePath,
-        asPath: currentPath,
+        pathname,
+        asPath: currentLocation.path,
         params,
-        query: currentQuery,
+        query: currentLocation.query,
         navigate,
       }}
     >
