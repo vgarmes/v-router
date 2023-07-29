@@ -1,18 +1,22 @@
 import { Link, useRouter } from '..';
 
 function UserPage() {
-  const { pathname, asPath, params, query } = useRouter();
+  const { pathname, asPath, params } = useRouter();
 
   return (
     <div>
-      <h1>This is a page with dynamic segments</h1>
-      <p>{`Id: ${params.id}`}</p>
-      <p>{`Pathname: ${pathname}`}</p>
-      <p>{`asPath: ${asPath}`}</p>
-      <p>{`Query: ${JSON.stringify(query)}`}</p>
-      <Link to={{ pathname: asPath, query: { search: 'word' } }}>
-        Add query parameters
-      </Link>
+      <h1>This is a page with a dynamic segment (user id)</h1>
+      <p>
+        The id in the url is: <strong>{params.id}</strong>
+      </p>
+      <p>
+        The pathname with segments: <strong>{pathname}</strong>
+      </p>
+      <p>
+        The relative url with the dynamic values replaced:{' '}
+        <strong>{asPath}</strong>
+      </p>
+      <Link to="/">Back home</Link>
     </div>
   );
 }

@@ -1,11 +1,12 @@
 import { createContext, useContext } from 'react';
+import { PathObject } from './utils';
 
 interface RouterContext {
   pathname: string;
   asPath: string;
   params: Record<string, string>;
   query: Record<string, string | string[]>;
-  navigate: (href: string) => void;
+  navigate: (to: string | PathObject) => void;
 }
 
 export const RouterContext = createContext<RouterContext>(null!);

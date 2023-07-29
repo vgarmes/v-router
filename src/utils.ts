@@ -61,7 +61,7 @@ export function getRelativeHref(url: string | PathObject) {
       }
     });
   }
-  return searchParams.size === 0
-    ? compiledPathname
-    : `${compiledPathname}?${searchParams}`;
+  return searchParams.toString()
+    ? `${compiledPathname}?${searchParams}`
+    : compiledPathname;
 }
