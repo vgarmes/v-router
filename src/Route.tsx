@@ -1,10 +1,8 @@
-import { LazyExoticComponent } from 'react';
-
-type RouteComponent = () => JSX.Element;
+import { ReactNode } from 'react';
 
 export interface RouteProps {
   path: string;
-  Component: RouteComponent | LazyExoticComponent<RouteComponent>;
+  element: ReactNode;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

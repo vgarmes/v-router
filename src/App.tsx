@@ -9,7 +9,7 @@ const AboutPage = lazy(() => import('./pages/About.tsx'));
 const routes = [
   {
     path: '/user/:id',
-    Component: UserPage,
+    element: <UserPage />,
   },
 ];
 
@@ -17,9 +17,9 @@ function App() {
   return (
     <main>
       <Suspense fallback={null}>
-        <Router routes={routes} defaultComponent={Page404}>
-          <Route path="/" Component={HomePage} />
-          <Route path="/about" Component={AboutPage} />
+        <Router routes={routes} defaultElement={<Page404 />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
         </Router>
       </Suspense>
     </main>

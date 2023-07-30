@@ -1,4 +1,10 @@
-import { useState, useEffect, Children, PropsWithChildren } from 'react';
+import {
+  useState,
+  useEffect,
+  Children,
+  PropsWithChildren,
+  ReactNode,
+} from 'react';
 import { EVENTS } from './constants';
 import { match } from 'path-to-regexp';
 import { RouteProps } from './';
@@ -13,7 +19,7 @@ import { RouterContext } from './context';
 
 interface Props {
   routes?: Array<RouteProps>;
-  defaultComponent?: () => JSX.Element;
+  defaultElement?: ReactNode;
 }
 
 function navigate(to: string | PathObject) {
@@ -24,7 +30,7 @@ function navigate(to: string | PathObject) {
 export function Router({
   children,
   routes = [],
-  defaultComponent: DefaultComponent = () => <h1>404</h1>,
+  defaultElement = <h1>404</h1>,
 }: PropsWithChildren<Props>) {
   const [currentLocation, setCurrentLocation] = useState({
     path: getCurrentPath(),
@@ -59,7 +65,7 @@ export function Router({
 
   const routesToUse = [...routes, ...routesFromChildren];
 
-  const Page = routesToUse.find(({ path }) => {
+  const page = routesToUse.find(({ path }) => {
     if (path === currentLocation.path) {
       pathname = path;
       return true;
@@ -73,7 +79,7 @@ export function Router({
     params = matched.params as Record<string, string>;
     pathname = path;
     return true;
-  })?.Component;
+  })?.element;
 
   return (
     <RouterContext.Provider
@@ -85,7 +91,7 @@ export function Router({
         navigate,
       }}
     >
-      {Page ? <Page /> : <DefaultComponent />}
+      {page ? page : defaultElement}
     </RouterContext.Provider>
   );
 }
