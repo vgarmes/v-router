@@ -3,9 +3,13 @@ import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { Router, Route, Link } from './';
 import { getCurrentPath } from './utils';
 
-vi.mock('./utils', () => ({
-  getCurrentPath: vi.fn(),
-}));
+vi.mock('./utils', async () => {
+  const mod = await vi.importActual<typeof import('./utils')>('./utils');
+  return {
+    ...mod,
+    getCurrentPath: vi.fn(),
+  };
+});
 
 describe('Router', () => {
   beforeEach(() => {
