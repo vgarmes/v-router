@@ -1,5 +1,4 @@
 import { Suspense, lazy } from 'react';
-import './App.css';
 import { Router, Route } from './';
 import HomePage from './pages/Home';
 import UserPage from './pages/User.tsx';
