@@ -38,17 +38,22 @@ export type PathObject = {
   query?: Record<string, string | string[]>;
 };
 
-export function getRelativeHref(url: string | PathObject) {
+export function getRelativeHref(
+  url: string | PathObject,
+  basename: string = ''
+) {
   if (typeof url === 'string') {
-    return url;
+    return basename + url;
   }
   if (!url.pathname) {
     return '';
   }
 
-  let compiledPathname = url.pathname;
+  let compiledPathname = basename;
   if (url.pathSegments) {
-    compiledPathname = compilePathWithSegments(url.pathname, url.pathSegments);
+    compiledPathname += compilePathWithSegments(url.pathname, url.pathSegments);
+  } else {
+    compiledPathname += url.pathname;
   }
 
   const searchParams = new URLSearchParams();

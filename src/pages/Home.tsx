@@ -10,7 +10,7 @@ interface FormWithControls extends HTMLFormElement {
 }
 
 function HomePage() {
-  const { asPath, query, navigate } = useRouter();
+  const { pathname, query, navigate } = useRouter();
 
   const onSubmit = (e: FormEvent<FormWithControls>) => {
     e.preventDefault();
@@ -18,10 +18,10 @@ function HomePage() {
     const searchTerm = elements.search.value;
     searchTerm
       ? navigate({
-          pathname: asPath,
+          pathname,
           query: { search: elements.search.value },
         })
-      : navigate(asPath);
+      : navigate(pathname);
   };
 
   return (

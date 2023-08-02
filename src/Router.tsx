@@ -4,6 +4,7 @@ import {
   Children,
   PropsWithChildren,
   ReactNode,
+  useCallback,
 } from 'react';
 import { EVENTS } from './constants';
 import { match } from 'path-to-regexp';
@@ -20,22 +21,27 @@ import { RouterContext } from './context';
 interface Props {
   routes?: Array<RouteProps>;
   defaultElement?: ReactNode;
-}
-
-function navigate(to: string | PathObject) {
-  const href = getRelativeHref(to);
-  dispatchPushStateEvent(href);
+  basename?: string;
 }
 
 export function Router({
   children,
   routes = [],
   defaultElement = <h1>404</h1>,
+  basename = '',
 }: PropsWithChildren<Props>) {
   const [currentLocation, setCurrentLocation] = useState({
     path: getCurrentPath(),
     query: getQueryParams(),
   });
+
+  const navigate = useCallback(
+    (to: string | PathObject) => {
+      const href = getRelativeHref(to, basename);
+      dispatchPushStateEvent(href);
+    },
+    [basename]
+  );
 
   useEffect(() => {
     const onLocationChange = () =>
@@ -66,12 +72,14 @@ export function Router({
   const routesToUse = [...routes, ...routesFromChildren];
 
   const page = routesToUse.find(({ path }) => {
-    if (path === currentLocation.path) {
+    const pathWithBase = basename + path;
+
+    if (pathWithBase === currentLocation.path) {
       pathname = path;
       return true;
     }
 
-    const matcherUrl = match(path, { decode: decodeURIComponent });
+    const matcherUrl = match(pathWithBase, { decode: decodeURIComponent });
 
     const matched = matcherUrl(currentLocation.path);
     if (!matched) return false;
@@ -89,6 +97,7 @@ export function Router({
         params,
         query: currentLocation.query,
         navigate,
+        basename,
       }}
     >
       {page ? page : defaultElement}

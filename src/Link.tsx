@@ -1,12 +1,14 @@
 import { AnchorHTMLAttributes, MouseEvent } from 'react';
 import { PathObject, dispatchPushStateEvent, getRelativeHref } from './utils';
+import { useRouter } from '.';
 
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   to: string | PathObject;
 }
 
 export function Link({ target, to, ...props }: LinkProps) {
-  const href = getRelativeHref(to);
+  const { basename } = useRouter();
+  const href = getRelativeHref(to, basename);
   const handleClick = (event: MouseEvent) => {
     const isMainEvent = event.button === 0; // left click
     const isModifiedEvent =

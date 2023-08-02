@@ -7,6 +7,7 @@ interface RouterContext {
   params: Record<string, string>;
   query: Record<string, string | string[]>;
   navigate: (to: string | PathObject) => void;
+  basename: string;
 }
 
 export const RouterContext = createContext<RouterContext>(null!);
