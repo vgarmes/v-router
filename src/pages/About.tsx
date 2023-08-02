@@ -5,7 +5,10 @@ function AboutPage() {
     <>
       <h1>About</h1>
       <img src="" alt="" />
-      <p>Hi! I&apos;m Victor and I&apos;m creating a clone of React router</p>
+      <p>
+        This is a showcase for a React Router clone!{' '}
+        <a href="https://github.com/vgarmes/v-router">See source code</a>
+      </p>
       <Link to="/">Go Home</Link>
     </>
   );

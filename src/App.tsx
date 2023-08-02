@@ -2,15 +2,16 @@ import { Suspense, lazy } from 'react';
 import { Router, Route } from './';
 import HomePage from './pages/Home';
 import Page404 from './pages/404';
-
-const UserPage = lazy(() => import('./pages/User'));
-const AboutPage = lazy(() => import('./pages/About'));
+import AboutPage from './pages/About';
+import UserPage from './pages/User';
+const LazyPage = lazy(() => import('./pages/Lazy'));
 
 const routes = [
   {
     path: '/user/:id',
     element: <UserPage />,
   },
+  { path: '/lazy', element: <LazyPage /> },
 ];
 
 function App() {
