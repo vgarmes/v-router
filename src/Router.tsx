@@ -63,8 +63,8 @@ export function Router({
   const routesFromChildren =
     Children.map(children, (child) => {
       const { props, type } = child as JSX.Element;
-      const { name } = type;
-      const isRoute = name === 'Route';
+      const { displayName } = type;
+      const isRoute = displayName === 'Route';
 
       return isRoute ? (props as RouteProps) : null;
     })?.filter(Boolean) || [];
