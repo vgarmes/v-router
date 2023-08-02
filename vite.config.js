@@ -7,7 +7,6 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
   },
-  base: '/v-router/',
   build: {
     outDir: 'app',
   },
