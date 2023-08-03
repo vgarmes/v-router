@@ -40,7 +40,7 @@ function HomePage() {
         <Link to={{ pathname: '/user/:id', pathSegments: { id: '123' } }}>
           Go to User page with dynamic route
         </Link>
-        <Link to="/lazy">Lazy loaded page</Link>
+        <Link to="/lazy">Go to a lazy loaded page</Link>
       </div>
 
       <form onSubmit={onSubmit}>
